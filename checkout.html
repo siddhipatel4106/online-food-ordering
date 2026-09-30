@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - QuickBite</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍕 QuickBite</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="cart.html" class="nav-link">Cart <span class="cart-count"></span></a></li>
+                    <li class="user-menu">
+                        <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                        <div id="loggedInUser" style="display: none;">
+                            <span class="user-greeting" id="userGreeting"></span>
+                            <a href="#" class="nav-link logout-btn" onclick="logoutUser()">Logout</a>
+                        </div>
+                    </li>
+                    <li><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Checkout</h1>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div>
+                <h3>Delivery Address</h3>
+                <form id="checkoutForm">
+                    <div class="form-group">
+                        <label>Full Name *</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number *</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Full Address *</label>
+                        <textarea name="delivery_address" placeholder="Enter your complete delivery address" required rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Delivery Instructions (Optional)</label>
+                        <textarea name="instructions" placeholder="Any special delivery instructions..." rows="2"></textarea>
+                    </div>
+                    
+                    <h3 style="margin-top: 30px;">Payment Method</h3>
+                    <div class="payment-options">
+                        <div class="payment-option selected">
+                            <h4>Cash on Delivery</h4>
+                            <p>Pay when you receive your order</p>
+        
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary btn-block" onclick="placeOrder()" style="margin-top: 30px;">
+                        Place Order
+                    </button>
+                </form>
+            </div>
+            
+            <div>
+                <h3>Order Summary</h3>
+                <div id="checkoutItems"></div>
+                <div class="cart-summary">
+                    <div class="summary-item">
+                        <span>Subtotal:</span>
+                        <span id="checkoutSubtotal">₹0.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Delivery Fee:</span>
+                        <span>₹40.00</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Tax (5%):</span>
+                        <span id="checkoutTax">₹0.00</span>
+                    </div>
+                    <div class="summary-item total">
+                        <strong>Total:</strong>
+                        <strong id="checkoutTotal">₹0.00</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 QuickBite Food Delivery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+    <script>
+    function loadCheckoutItems() {
+        const cart = JSON.parse(localStorage.getItem('foodCart')) || [];
+        const checkoutItems = document.getElementById('checkoutItems');
+        let subtotal = 0;
+        let html = '';
+        
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.quantity;
+            subtotal += itemTotal;
+            html += `
+                <div class="cart-item">
+                    <div class="image-placeholder" style="width: 60px; height: 60px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: linear-gradient(45deg, #f8f9fa, #e9ecef); font-size: 0.8rem; text-align: center;">
+                        ${item.name.substring(0, 2).toUpperCase()}
+                    </div>
+                    <div style="flex: 1;">
+                        <h4>${item.name}</h4>
+                        <p>Quantity: ${item.quantity}</p>
+                    </div>
+                    <div style="font-weight: bold;">₹${itemTotal.toFixed(2)}</div>
+                </div>
+            `;
+        });
+        
+        if (checkoutItems) checkoutItems.innerHTML = html;
+        
+        const deliveryFee = 40;
+        const tax = subtotal * 0.05;
+        const total = subtotal + deliveryFee + tax;
+        
+        if (document.getElementById('checkoutSubtotal')) {
+            document.getElementById('checkoutSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+            document.getElementById('checkoutTax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('checkoutTotal').textContent = `₹${total.toFixed(2)}`;
+        }
+    }
+
+    async function placeOrder() {
+        const cart = JSON.parse(localStorage.getItem('foodCart')) || [];
+        const form = document.getElementById('checkoutForm');
+        const formData = new FormData(form);
+        
+        if (cart.length === 0) {
+            alert('Your cart is empty');
+            return;
+        }
+
+        const orderData = {
+            items: cart,
+            name: formData.get('name'),
+            phone: formData.get('phone'),
+            delivery_address: formData.get('delivery_address'),
+            instructions: formData.get('instructions'),
+            payment_method: 'cod'
+        };
+
+        try {
+            const response = await fetch('php/place_order.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData)
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                localStorage.removeItem('foodCart');
+                window.location.href = `order_success.html?order_id=${data.order_id}`;
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch (error) {
+            alert('Error placing order: ' + error.message);
+        }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+        loadCheckoutItems();
+        updateCartCount();
+    });
+    </script>
+</body>
+</html>

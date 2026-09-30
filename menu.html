@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - QuickBite</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍕 QuickBite</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="cart.html" class="nav-link">Cart <span class="cart-count"></span></a></li>
+                    
+                    <!-- Dynamic User Menu -->
+                    <li class="user-menu">
+                        <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                        <div id="loggedInUser" style="display: none; align-items: center; gap: 10px;">
+                            <span class="user-greeting" id="userGreeting"></span>
+                            <a href="#" class="nav-link logout-btn" onclick="logoutUser()">Logout</a>
+                        </div>
+                    </li>
+                    <li><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="container">
+        <h1 class="section-title">Our Menu</h1>
+        
+        <!-- Categories Filter -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button class="btn btn-primary" onclick="loadFoodItems()">All Items</button>
+            <button class="btn btn-outline" onclick="loadCategoryItems(1)">Indian</button>
+            <button class="btn btn-outline" onclick="loadCategoryItems(2)">Mexican</button>
+            <button class="btn btn-outline" onclick="loadCategoryItems(3)">Italian</button>
+            <button class="btn btn-outline" onclick="loadCategoryItems(4)">Chinese</button>
+            <button class="btn btn-outline" onclick="loadCategoryItems(5)">Beverages</button>
+        </div>
+
+        <!-- Food Items Grid -->
+        <div class="food-grid" id="foodGrid">
+            <!-- Food items loaded by JavaScript -->
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 QuickBite Food Delivery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - QuickBite</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍕 QuickBite</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="cart.html" class="nav-link">Cart <span class="cart-count"></span></a></li>
+                    
+                    <!-- Dynamic User Menu -->
+                    <li class="user-menu">
+                        <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                        <div id="loggedInUser" style="display: none;">
+                            <span class="user-greeting" id="userGreeting"></span>
+                            <a href="#" class="nav-link logout-btn" onclick="logoutUser()">Logout</a>
+                        </div>
+                    </li>
+                    <li><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Your Cart</h1>
+        
+        <div id="cartItems">
+            <!-- Cart items loaded by JavaScript -->
+        </div>
+        
+        <div class="cart-summary" id="cartSummary" style="display: none;">
+            <h3>Order Summary</h3>
+            <div class="summary-item">
+                <span>Subtotal:</span>
+                <span id="subtotal">₹0.00</span>
+            </div>
+            <div class="summary-item">
+                <span>Delivery Fee:</span>
+                <span id="deliveryFee">₹40.00</span>
+            </div>
+            <div class="summary-item">
+                <span>Tax (5%):</span>
+                <span id="tax">₹0.00</span>
+            </div>
+            <div class="summary-item total">
+                <strong>Total:</strong>
+                <strong id="totalAmount">₹0.00</strong>
+            </div>
+            
+            <button class="btn btn-primary btn-block" onclick="proceedToCheckout()">Proceed to Checkout</button>
+            <button class="btn btn-outline btn-block" onclick="clearCart()">Clear Cart</button>
+        </div>
+
+        <div id="emptyCart" style="display: none; text-align: center; padding: 60px 20px;">
+            <h3>Your cart is empty</h3>
+            <p>Browse our menu and add some delicious food!</p>
+            <a href="menu.html" class="btn btn-primary">Browse Menu</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 QuickBite Food Delivery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/cart.js"></script>
+</body>
+</html>

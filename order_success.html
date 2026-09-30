@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful - QuickBite</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍕 QuickBite</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="cart.html" class="nav-link">Cart <span class="cart-count"></span></a></li>
+                    
+                    <!-- Dynamic User Menu -->
+                    <li class="user-menu">
+                        <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                        <div id="loggedInUser" style="display: none;">
+                            <span class="user-greeting" id="userGreeting"></span>
+                            <a href="#" class="nav-link logout-btn" onclick="logoutUser()">Logout</a>
+                        </div>
+                    </li>
+                    <li><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="order-success">
+            <div class="success-icon">✅</div>
+            <h1>Order Placed Successfully!</h1>
+            <p>Thank you for your order. Your food is being prepared.</p>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0; text-align: left;">
+                <h3>Order Details</h3>
+                <p><strong>Order ID:</strong> <span id="orderId"></span></p>
+                <p><strong>Estimated Delivery:</strong> 20-30 minutes</p>
+                <p>You will receive a confirmation message shortly.</p>
+            </div>
+            
+            <div style="margin-top: 30px;">
+                <a href="menu.html" class="btn btn-primary">Order More Food</a>
+                <a href="index.html" class="btn btn-outline">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 QuickBite Food Delivery. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Get order ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('order_id');
+        if (orderId) {
+            document.getElementById('orderId').textContent = '#' + orderId;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickBite - Food Delivery</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🍕 QuickBite</a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="menu.html" class="nav-link">Menu</a></li>
+                    <li><a href="cart.html" class="nav-link">Cart <span class="cart-count"></span></a></li>
+                    
+                    <!-- Dynamic User Menu -->
+                    <li class="user-menu">
+                        <a href="login.html" class="nav-link" id="loginLink">Login</a>
+                        <div id="loggedInUser" style="display: none;">
+                            <span class="user-greeting" id="userGreeting"></span>
+                            <a href="#" class="nav-link logout-btn" onclick="logoutUser()">Logout</a>
+                        </div>
+                    </li>
+                    <li><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Delicious Food Delivered Fast</h1>
+                <p>Order from our wide variety of cuisines and get it delivered in minutes</p>
+                <a href="menu.html" class="btn btn-primary">Order Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="container">
+        <h2 class="section-title">Popular Categories</h2>
+        <div class="categories-grid" id="categoriesGrid">
+            <!-- Categories loaded by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Popular Items -->
+    <section class="container">
+        <h2 class="section-title">Popular Items</h2>
+        <div class="food-grid" id="foodGrid">
+            <!-- Food items loaded by JavaScript -->
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="menu.html" class="btn btn-primary">View Full Menu</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 QuickBite Food Delivery. All rights reserved.</p>
+            
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Debug info
+        console.log('Website loaded successfully');
+        console.log('Current cart:', JSON.parse(localStorage.getItem('foodCart')) || []);
+        
+        // Test PHP endpoints
+        async function testEndpoints() {
+            try {
+                const response = await fetch('php/fetch_categories.php');
+                const data = await response.json();
+                console.log('Categories endpoint test:', data);
+            } catch (error) {
+                console.error('Categories endpoint test failed:', error);
+            }
+        }
+        
+        // Run test after page loads
+        setTimeout(testEndpoints, 1000);
+    </script>
+</body>
+</html>
